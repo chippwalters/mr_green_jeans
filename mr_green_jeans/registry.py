@@ -36,15 +36,9 @@ class MrGreenJeansExecutorBase(metaclass=ABCMeta):
         """ Abstract method to get icon """
         return icons._default_icon_id
 
-# end class MrGreenJeansExecutorBase
-
-
-
-
 class MrGreenJeansRegistryBase(type):
 
     MR_GREEN_JEANS_REGISTRY = {}
-
 
     @classmethod
     def register(cls) -> Callable:
@@ -56,8 +50,6 @@ class MrGreenJeansRegistryBase(type):
             return wrapped_class
 
         return inner_wrapper
-
-
 
     @classmethod
     def get_registry(cls):
