@@ -1,3 +1,4 @@
+# UI for MR GREEN JEANS
 import bpy
 from bpy.types import Panel, UIList
 from bpy.utils import register_class, unregister_class
@@ -6,15 +7,12 @@ from .registry import MrGreenJeansRegistryBase
 from . import addon, constants
 
 
-
 def display_refs(layout, refs, start, end):
-    '''Display a list of references to KPACKS given a range.'''
-
+    '''Display a list of MR GREEN JEANS items, given a range.'''
     box = layout.box()
     flow = box.grid_flow(row_major=True, even_rows=True, even_columns=True, align=False, columns=end-start)
 
     preference = addon.preference()
-
     for i in range(start, end):
 
         row = flow.row(align=False)
@@ -29,13 +27,12 @@ def display_refs(layout, refs, start, end):
                 registry_item = mr_green_jeans_registry[ref.name]
 
                 #determine icon
-                icon_id = registry_item.get_icon(None, bpy.context)
+                icon_id = registry_item.get_icon()
 
                 #determine active
                 is_active = registry_item.green_jeans_idname == preference.current
 
                 row.operator("greenjeans.select_item", text='', emboss=is_active, depress=is_active, icon_value=icon_id).green_jeans_idname = registry_item.green_jeans_idname
-
 
         except IndexError:
             # add a blank operator placeholder.
@@ -43,15 +40,13 @@ def display_refs(layout, refs, start, end):
             pass
 
 
-
 class MRGREENJEANS_PT_GeneralPanel(bpy.types.Panel):
     """Mr Green Jeans Panel"""
     bl_idname = "MRGREENJEANS_PT_GeneralPanel"
-    bl_label = "Mr Green Jeans"
-    bl_category = "Mr Green Jeans"
+    bl_label = "MR GREEN JEANS"
+    bl_category = "MR GREEN JEANS"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    # bl_parent_id = 'MRGREENJEANS_PT_GeneralPanel'
 
     def draw_header_preset(self, context):
         layout = self.layout
@@ -89,9 +84,6 @@ class MRGREENJEANS_PT_GeneralPanel(bpy.types.Panel):
             
             favorites = preference.favorites
             if len(favorites):
-
-
-
 
                 box_cols = row.column(align=True)
                 # build 3 rows of favorites

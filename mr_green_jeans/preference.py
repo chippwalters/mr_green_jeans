@@ -1,3 +1,4 @@
+# Global preferences for Mr Green Jeans
 import os
 
 import bpy
@@ -9,29 +10,36 @@ from .registry import MrGreenJeansRegistryBase
 from . import addon, constants
 
 
-class favorite(PropertyGroup):
+# placeholders classes to maintain list of Green Jeans references. The built in 'name' property is used here.
+class Favorite(PropertyGroup):
     pass
 
-class recent(PropertyGroup):
+class Recent(PropertyGroup):
     pass
 
-class green_jeans_item(PropertyGroup):
+class GreenJeansitem(PropertyGroup):
     pass
 
+# global list variable that Blender requires for EnumProperty items.
 green_jeans_items = []
 def get_green_jeans_items(self, context):
+    '''Get the registered items for Mr Green Jeans'''
     global green_jeans_items
     green_jeans_items = []
     mr_green_jeans_registry = MrGreenJeansRegistryBase.get_registry()
     i = 0
     for registry_id in mr_green_jeans_registry:
         registry_item = mr_green_jeans_registry[registry_id]
-        green_jeans_items.append((registry_item.green_jeans_idname, registry_item.get_name(self, context), registry_item.get_description(self, context), registry_item.get_icon(self, context), i))
+        green_jeans_items.append((registry_item.green_jeans_idname, registry_item.get_name(), registry_item.get_description(), registry_item.get_icon(), i))
         i+=1
 
-    return green_jeans_items
+    if green_jeans_items:
+        return green_jeans_items
+    else:
+        return [('NONE', 'No Green Jeans Items', '')]
 
 def current_changed(self, context):
+    '''React when the currently selected item is changed by updating the recently used items'''
     #push most recently used to top of stack.
     to_add = self.current
 
@@ -49,16 +57,17 @@ def current_changed(self, context):
         for i in range(constants.recently_used_limit, len(recently_used)):
             recently_used.remove(i)
 
-class mrgreenjeans(AddonPreferences):
+class MrGreenJeansPreferences(AddonPreferences):
+    '''class for containing preferences for Mt GreenJeans'''
     bl_idname = addon.addon_name()
 
-    favorites : CollectionProperty(type=favorite)
+    favorites : CollectionProperty(type=Favorite)
 
-    recently_used : CollectionProperty(type=recent)
+    recently_used : CollectionProperty(type=Recent)
 
     show_favorites: BoolProperty(
         name = 'Show Favorites',
-        description = 'Show shortcuts to my favorite Green Jeans items',
+        description = 'Show shortcuts to my Favorite Green Jeans items',
         default = True)
 
     show_recents: BoolProperty(
@@ -75,10 +84,10 @@ class mrgreenjeans(AddonPreferences):
 
 
 classes = [
-    favorite,
-    recent,
-    green_jeans_item,
-    mrgreenjeans]
+    Favorite,
+    Recent,
+    GreenJeansitem,
+    MrGreenJeansPreferences]
 
 
 def register():

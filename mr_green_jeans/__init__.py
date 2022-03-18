@@ -23,7 +23,7 @@ bl_info = {
 }
 
 
-from . import ui, operators, preference, registry, icons, register_test
+from . import ui, operators, preference, registry, icons
 
 from .registry import MrGreenJeansRegistryBase
 
@@ -33,9 +33,6 @@ def register():
     ui.register()
 
     icons.register()
-
-    # testing registry...
-    register_test.register()
 
 
 def unregister():

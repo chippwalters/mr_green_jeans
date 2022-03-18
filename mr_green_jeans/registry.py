@@ -1,3 +1,6 @@
+# 
+# This contains the main registration managemant and base classes for registering Mr Green Jeans items.
+# 
 import bpy
 from abc import ABCMeta, abstractmethod
 from typing import Callable
@@ -6,9 +9,11 @@ logger = logging.getLogger(__name__)
 from . import icons
 
 
+#
+# This is the base class for a Mr Green Jeans Item.  Inherit this class when creating a custom Mr Green Jeans Item class.
+#
 class MrGreenJeansExecutorBase(metaclass=ABCMeta):
-    """ Base class for an executor """
-
+    """ The Base class for a Mr Green Jeans Item. """
     green_jeans_idname = ''
 
     def __init__(self, **kwargs):
@@ -17,32 +22,35 @@ class MrGreenJeansExecutorBase(metaclass=ABCMeta):
 
     @abstractmethod
     def draw(self, context: bpy.types.Context):
-        """ Abstract method to draw """
+        """ Use for displaying properties and controls for the add-on """
         pass
 
     @abstractmethod
-    def get_name(self, context: bpy.types.Context):
-        """ Abstract method to get icon """
-        return ''
-
-
-    @abstractmethod
-    def get_description(self, context: bpy.types.Context):
-        """ Abstract method to get icon """
+    def get_name():
+        """ Get the short name for the add-on. """
         return ''
 
     @abstractmethod
-    def get_icon(self, context: bpy.types.Context):
-        """ Abstract method to get icon """
+    def get_description():
+        """ Get a textual description of the Item you are registering. """
+        return ''
+
+    @abstractmethod
+    def get_icon():
+        """ Get an icon id for the add-on. """
         return icons._default_icon_id
 
+
+#
+# This is the main registry management class for Mr Green Jeans uses for registering and for getting the registry.
+# 
 class MrGreenJeansRegistryBase(type):
 
     MR_GREEN_JEANS_REGISTRY = {}
 
     @classmethod
     def register(cls) -> Callable:
-
+        '''register a Mr Green Jeans item'''
         def inner_wrapper(wrapped_class: MrGreenJeansExecutorBase) -> Callable:
             if wrapped_class.green_jeans_idname in cls.MR_GREEN_JEANS_REGISTRY:
                 logger.warning('Green Jeans Item %s already exists. Will replace it', wrapped_class.green_jeans_idname)
@@ -52,51 +60,17 @@ class MrGreenJeansRegistryBase(type):
         return inner_wrapper
 
     @classmethod
+    def unregister(cls) -> Callable:
+        '''register a Mr Green Jeans item'''
+        def inner_wrapper(wrapped_class: MrGreenJeansExecutorBase) -> Callable:
+            if wrapped_class.green_jeans_idname in cls.MR_GREEN_JEANS_REGISTRY:
+
+                cls.MR_GREEN_JEANS_REGISTRY.pop(wrapped_class.green_jeans_idname.lower(), None)
+            return wrapped_class
+
+        return inner_wrapper
+
+    @classmethod
     def get_registry(cls):
+        '''Get a copy of the Mr Green Jeans Registry'''
         return dict(cls.MR_GREEN_JEANS_REGISTRY)
-
-
-class MrGreenJeansBaseRegisteredClass(metaclass=MrGreenJeansRegistryBase):
-        def draw(self, context):
-            """
-            Draw the UI entry for Mr Green Jeans.
-            """
-            raise NotImplementedError()
-
-@MrGreenJeansRegistryBase.register()
-class MrGreenJeansExtendedRegisteredClassTest1(MrGreenJeansExecutorBase):
-
-    green_jeans_idname = 'greenjeans.test1'
-
-    def draw(self, context):
-        layout = self.layout
-        layout.label(text='SNOZZWANGERS')
-        for i in range(0,3):
-            layout.operator('view3d.mr_green_jeans_op', text='SW Button ' + str(i))
-
-    def get_name(self, context):
-        """ method to get icon """
-        return 'SNOZZWANGERS'
-
-    def get_icon(self, context):
-        """ method to get icon """
-        return icons._all_icons['butterfly.png']
-
-@MrGreenJeansRegistryBase.register()
-class MrGreenJeansExtendedRegisteredClassTest2(MrGreenJeansExecutorBase):
-
-    green_jeans_idname = 'greenjeans.test2'
-
-    def draw(self, context):
-        layout = self.layout
-        layout.label(text='WHANGDOODLES')
-        for i in range(0,5):
-            layout.operator('view3d.mr_green_jeans_op', text='Test Button ' + str(i))
-
-    def get_name(self, context):
-        """ method to get icon """
-        return 'WHANGDOODLES'
-
-    def get_icon(self, context):
-        """ method to get icon """
-        return icons._all_icons['train.png']

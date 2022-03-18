@@ -1,3 +1,4 @@
+# Class for handing icon registry.
 import os
 
 from bpy.utils import previews
@@ -7,6 +8,7 @@ preview_collections = {}
 _default_icon_id = None
 _all_icons = {}
 def register():
+    '''Register icons for Mr Green Jeans'''
 
     custom_icons = previews.new()
     preview_collections['Main'] = custom_icons
@@ -26,6 +28,7 @@ def register():
         _all_icons[iconfile] = thumb.icon_id
 
 def unregister():
+    '''Unregister icons for Mr Green Jeans'''
     for custom_icons in preview_collections.values():
         previews.remove(custom_icons)
     preview_collections.clear()
