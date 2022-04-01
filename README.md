@@ -9,7 +9,7 @@ Mr Green Jeans is an add-on for Blender that helps you manage add-ons through a 
 * Once an add-on is registered with the Mr Green Jeans API, a user can access that add-on from the MR GREEN JEANS side panel.
 * The add-on API registration is designed to be simple and similar to Blender's built in registration process.
 * The example add-on packaged here shows how to use the API and how to design the add-on so that it does not error if MR GREEN JEANS is not installed.
-* Recently User Add-ons and Favorites are all managed by the MR GREEN JEANS add-on itself.
+* *Recently Used* Add-ons and *Favorites* are all managed by the MR GREEN JEANS add-on itself.
 
 ## How to use
 
