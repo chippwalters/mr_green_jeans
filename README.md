@@ -11,7 +11,7 @@ Mr Green Jeans is an add-on for Blender that helps you manage add-ons through a 
 * The example add-on packaged here shows how to use the API and how to design the add-on so that it does not error if MR GREEN JEANS is not installed.
 * *Recently Used* Add-ons and *Favorites* are all managed by the MR GREEN JEANS add-on itself.
 
-## How to use
+## Quickstart
 
 1. Download this MR GREEN JEANS repository.
 2. Optionally use the linux based build.sh file to build both the main add-on and the example code. In Windows, this can be ran from a shell program such as Ubuntu
